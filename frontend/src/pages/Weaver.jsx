@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { t } from "../i18n";
 import api from "../api";
-import API, {BASE_URL} from "../api";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -373,23 +372,7 @@ export default function Weaver() {
         {filteredSarees.map(s => (
           <div key={s.id} className="saree-card">
             <div className="card-image">
-              {i.image_url ? (
-                <img 
-                src={`${BASE_URL}${i.image_url}`}
-                alt=""
-                className="resource-image"
-                />
-                ) : (
-                <div className="resource-image" style={{
-                background:'#eee',
-                display:'flex',
-                alignItems:'center',
-                justifyContent:'center',
-                fontSize:'40px'
-                }}>
-                🧶
-                </div>
-                )}
+              {s.image_url ? <img src={s.image_url} alt="" /> : <div style={{ height: '200px', background: '#eee' }}></div>}
               <span className="badge">LIVE</span>
               <button
                 onClick={() => setShowQR(s)}
@@ -447,7 +430,23 @@ export default function Weaver() {
         {resources.map(res => (
           <div key={res.id} className="resource-card">
             <div style={{ position: 'relative' }}>
-              {res.image_url ? <img src={res.image_url} alt="" className="resource-image" /> : <div className="resource-image" style={{ background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px' }}>🧶</div>}
+              {i.image_url ? (
+                  <img 
+                  src={`${BASE_URL}${i.image_url}`}
+                  alt=""
+                  className="resource-image"
+                  />
+                  ) : (
+                  <div className="resource-image" style={{
+                  background:'#eee',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  fontSize:'40px'
+                  }}>
+                  🧶
+                  </div>
+                  )}
               <span className="badge" style={{ position: 'absolute', top: '15px', right: '15px', background: res.category === 'Tool' ? '#333' : 'var(--accent)' }}>{res.category}</span>
             </div>
             <div style={{ padding: '20px' }}>
