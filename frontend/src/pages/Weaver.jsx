@@ -431,9 +431,9 @@ export default function Weaver() {
         {resources.map(res => (
           <div key={res.id} className="resource-card">
             <div style={{ position: 'relative' }}>
-              {i.image_url ? (
+              {res.image_url ? (
                   <img 
-                  src={`${BASE_URL}${i.image_url}`}
+                  src={`${BASE_URL}${res.image_url}`}
                   alt=""
                   className="resource-image"
                   />
@@ -448,7 +448,7 @@ export default function Weaver() {
                   🧶
                   </div>
                   )}
-              <span className="badge" style={{ position: 'absolute', top: '15px', right: '15px', background: res.category === 'Tool' ? '#333' : 'var(--accent)' }}>{res.category}</span>
+                  <span className="badge" style={{ position: 'absolute', top: '15px', right: '15px', background: res.category === 'Tool' ? '#333' : 'var(--accent)' }}>{res.category}</span>
             </div>
             <div style={{ padding: '20px' }}>
               <h3 style={{ margin: '0 0 5px 0', fontSize: '18px' }}>{res.type}</h3>
