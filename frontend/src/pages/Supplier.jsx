@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { t } from "../i18n";
 import api from "../api";
+import API, {BASE_URL} from "../api";
 
 const toolsList = ["Loom (Handloom)", "Pit Loom", "Frame Loom", "Warp Beam", "Cloth Beam", "Reed", "Shuttle", "Charkha", "Takli"];
 const fabricList = ["Pure Pattu", "Pure Cotton", "Pure Wool", "Mulberry Silk Yarn", "Cotton Yarn", "Zari"];
@@ -208,7 +209,15 @@ export default function Supplier() {
         {filteredItems.map((i) => (
           <div key={i.id} className="resource-card">
             <div style={{position: 'relative'}}>
-              {i.image_url ? <img src={`https://handloom-marketplace.onrender.com/${i.image}`} alt="" className="resource-image" /> : <div className="resource-image" style={{background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px'}}>🧶</div>}
+              {i.image ? (
+                    <img 
+                    src={`${BASE_URL}/${i.image}`}
+                    alt=""
+                    className="resource-image"
+                    />
+                    ) : (
+                    <div className="resource-image">🧶</div>
+                    )}
               <span className="badge" style={{position: 'absolute', top: '15px', right: '15px', background: i.category === 'Tool' ? '#333' : 'var(--accent)'}}>{i.category}</span>
               
               {/* 🔹 LOW STOCK ALERT */}

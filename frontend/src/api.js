@@ -1,7 +1,9 @@
 import axios from "axios";
 
+export const BASE_URL="https://handloom-marketplace.onrender.com";
+
 const API = axios.create({
-  baseURL: "https://handloom-marketplace.onrender.com/api",
+  baseURL: BASE_URL + "/api",
   withCredentials:false
 });
 
