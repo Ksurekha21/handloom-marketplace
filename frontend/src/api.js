@@ -2,6 +2,9 @@ import axios from "axios";
 
 export const BASE_URL="https://handloom-marketplace.onrender.com";
 
+
+<img src={`${BASE}${i.image_url}`} />
+
 const API = axios.create({
   baseURL: BASE_URL + "/api",
   withCredentials:false
