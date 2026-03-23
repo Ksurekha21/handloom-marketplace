@@ -1,0 +1,21 @@
+User table columns:
+ - id (INTEGER)
+ - name (VARCHAR(100))
+ - role (VARCHAR(50))
+ - state (VARCHAR(50))
+ - email (VARCHAR(120))
+ - password (VARCHAR(120))
+ - id_proof_path (VARCHAR(500))
+ - weaver_material (VARCHAR(100))
+ - weaver_saree_type (VARCHAR(100))
+
+Total users: 9
+User: surekha@example.com, Role: supplier, Password Hashed: True
+User: klnarayana1977@gmail.com, Role: weaver, Password Hashed: True
+User: surekhaK12@gmail.com, Role: supplier, Password Hashed: True
+User: prasukosimala@gmail.com, Role: buyer, Password Hashed: True
+User: new_weaver@test.com, Role: weaver, Password Hashed: True
+User: new_supplier@test.com, Role: supplier, Password Hashed: True
+User: new_buyer@test.com, Role: buyer, Password Hashed: True
+User: surekhaK102@gmail.com, Role: supplier, Password Hashed: True
+User: prasuna2007@gmail.com, Role: buyer, Password Hashed: True

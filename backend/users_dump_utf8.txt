@@ -1,0 +1,5 @@
+TOTAL USERS: 4
+ID: 1 | EMAIL: surekha@example.com | ROLE: supplier | PWD: pass123
+ID: 2 | EMAIL: klnarayana1977@gmail.com | ROLE: weaver | PWD: narayana@1977
+ID: 3 | EMAIL: surekhaK12@gmail.com | ROLE: supplier | PWD: prassu21
+ID: 4 | EMAIL: prasukosimala@gmail.com | ROLE: buyer | PWD: prassu21

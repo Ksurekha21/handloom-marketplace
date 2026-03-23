@@ -1,0 +1,65 @@
+Database: sqlite:///C:\handloom-connect\backend\instance\handloom_v7.db
+
+Table: material_order
+ - id (INTEGER)
+ - weaver_id (INTEGER)
+ - material_id (INTEGER)
+ - quantity (VARCHAR(50))
+ - total_price (FLOAT)
+ - status (VARCHAR(50))
+ - payment_method (VARCHAR(50))
+ - address (TEXT)
+ - phone (VARCHAR(20))
+ - created_at (DATETIME)
+ - estimated_delivery (VARCHAR(100))
+
+Table: order
+ - id (INTEGER)
+ - buyer_id (INTEGER)
+ - saree_id (INTEGER)
+ - status (VARCHAR(50))
+ - payment_method (VARCHAR(50))
+ - created_at (DATETIME)
+
+Table: raw_material
+ - id (INTEGER)
+ - supplier_id (INTEGER)
+ - material_type (VARCHAR(100))
+ - category (VARCHAR(50))
+ - quantity (VARCHAR(50))
+ - price (FLOAT)
+ - description (TEXT)
+ - image_url (TEXT)
+ - created_at (DATETIME)
+
+Table: review
+ - id (INTEGER)
+ - saree_id (INTEGER)
+ - buyer_id (INTEGER)
+ - rating (INTEGER)
+ - comment (TEXT)
+ - created_at (DATETIME)
+
+Table: saree
+ - id (INTEGER)
+ - weaver_id (INTEGER)
+ - title (VARCHAR(200))
+ - category (VARCHAR(100))
+ - price (FLOAT)
+ - description (TEXT)
+ - image_url (TEXT)
+ - color (VARCHAR(50))
+ - days_to_weave (INTEGER)
+ - raw_material_cost (FLOAT)
+ - created_at (DATETIME)
+
+Table: user
+ - id (INTEGER)
+ - name (VARCHAR(100))
+ - role (VARCHAR(50))
+ - state (VARCHAR(50))
+ - email (VARCHAR(120))
+ - password (VARCHAR(120))
+ - id_proof_path (VARCHAR(500))
+ - weaver_material (VARCHAR(100))
+ - weaver_saree_type (VARCHAR(100))
