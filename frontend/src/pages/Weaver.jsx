@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { t } from "../i18n";
 import api from "../api";
+import API, {BASE_URL} from "../api";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
