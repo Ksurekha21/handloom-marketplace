@@ -210,14 +210,17 @@ export default function Supplier() {
           <div key={i.id} className="resource-card">
             <div style={{position: 'relative'}}>
               {i.image_url ? (
-                  <img 
-                  src={`https://handloom-marketplace.onrender.com${i.image_url}`}
-                  alt=""
-                  className="resource-image"
-                  />
-                  ) : (
-                  <div className="resource-image">🧶</div>
-                  )}
+                        <img 
+                        src={`${BASE_URL}${i.image_url}`}
+                        alt=""
+                        className="resource-image"
+                        />
+                        ) : (
+                        <div className="resource-image">🧶</div>
+                        )}
+
+
+              
               <span className="badge" style={{position: 'absolute', top: '15px', right: '15px', background: i.category === 'Tool' ? '#333' : 'var(--accent)'}}>{i.category}</span>
               
               {/* 🔹 LOW STOCK ALERT */}
