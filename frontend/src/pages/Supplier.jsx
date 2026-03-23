@@ -209,7 +209,15 @@ export default function Supplier() {
         {filteredItems.map((i) => (
           <div key={i.id} className="resource-card">
             <div style={{position: 'relative'}}>
-              <img src={i.image ? `${BASE_URL}/uploads/${i.image}` : "/placeholder.png"} alt={i.type} style={{width: '100%', height: '150px', objectFit: 'cover', borderRadius: '12px 12px 0 0', border: '1px solid #ddd'}} />
+              {i.image ? (
+                <img 
+                src={`${BASE_URL}/${i.image}`}
+                alt=""
+                className="resource-image"
+                />
+                ) : (
+                <div className="resource-image">🧶</div>
+                )}
               <span className="badge" style={{position: 'absolute', top: '15px', right: '15px', background: i.category === 'Tool' ? '#333' : 'var(--accent)'}}>{i.category}</span>
               
               {/* 🔹 LOW STOCK ALERT */}
