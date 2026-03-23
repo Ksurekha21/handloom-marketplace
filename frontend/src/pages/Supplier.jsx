@@ -209,12 +209,11 @@ export default function Supplier() {
         {filteredItems.map((i) => (
           <div key={i.id} className="resource-card">
             <div style={{position: 'relative'}}>
-              {i.image ? (
-                    <img 
-                    src={`${BASE_URL}/${i.image}`}
-                    alt=""
-                    className="resource-image"
-                    />
+              {i.image ? (<img 
+                            src={`https://handloom-marketplace.onrender.com/uploads/${i.image}`}
+                            className="resource-image"
+                            />
+                    
                     ) : (
                     <div className="resource-image">🧶</div>
                     )}
