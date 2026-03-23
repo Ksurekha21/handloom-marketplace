@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import { t } from "../i18n";
 import api from "../api";
+import API, {BASE_URL} from "../api";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -372,7 +373,23 @@ export default function Weaver() {
         {filteredSarees.map(s => (
           <div key={s.id} className="saree-card">
             <div className="card-image">
-              {s.image_url ? <img src={s.image_url} alt="" /> : <div style={{ height: '200px', background: '#eee' }}></div>}
+              {i.image_url ? (
+                <img 
+                src={`${BASE_URL}${i.image_url}`}
+                alt=""
+                className="resource-image"
+                />
+                ) : (
+                <div className="resource-image" style={{
+                background:'#eee',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                fontSize:'40px'
+                }}>
+                🧶
+                </div>
+                )}
               <span className="badge">LIVE</span>
               <button
                 onClick={() => setShowQR(s)}
