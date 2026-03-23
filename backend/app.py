@@ -17,9 +17,8 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/*":{"origins":"*"}})
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:\\handloom-connect\\backend\\instance\\handloom_v7.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///handloom.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db.init_app(app)
 migrate = Migrate(app, db)
 
