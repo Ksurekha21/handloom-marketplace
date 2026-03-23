@@ -218,8 +218,6 @@ export default function Supplier() {
                         ) : (
                         <div className="resource-image">🧶</div>
                         )}
-
-
               
               <span className="badge" style={{position: 'absolute', top: '15px', right: '15px', background: i.category === 'Tool' ? '#333' : 'var(--accent)'}}>{i.category}</span>
               
