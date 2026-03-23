@@ -13,6 +13,11 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
+UPLOAD_FOLDER = "uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 
 CORS(app, resources={r"/*":{"origins":"*"}})
@@ -40,7 +45,8 @@ def ping():
 def home():
     return {"message": "Handloom Connect Backend Running"}
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(host="0.0.0.0", port=5000)
