@@ -1,16 +1,18 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+const API = axios.create({
+  baseURL: "https://handloom-marketplace.onrender.com",
+  withCredentials:false
 });
 
+
 // 🔍 Network Traffic Logging
-api.interceptors.request.use(request => {
+API.interceptors.request.use(request => {
   console.log('--- Network Request ---', request.method.toUpperCase(), request.url, request.data);
   return request;
 });
 
-api.interceptors.response.use(
+API.interceptors.response.use(
   response => {
     console.log('--- Network Response ---', response.status, response.data);
     return response;
@@ -27,4 +29,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default API;
