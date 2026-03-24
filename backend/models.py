@@ -7,7 +7,7 @@ class User(db.Model):
     role = db.Column(db.String(50), nullable=False)
     state = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    password = db.Column(db.Text), nullable=False)
     id_proof_path = db.Column(db.String(500), nullable=True)
     weaver_material = db.Column(db.String(100), nullable=True)
     weaver_saree_type = db.Column(db.String(100), nullable=True)
