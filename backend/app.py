@@ -54,7 +54,7 @@ def uploaded_file(filename):
 
 @app.route("/ping")
 def ping():
-    return {"status": "ok", "database": str(db.engine.url)}
+    return {"status": "ok"}
 
 @app.route("/")
 def home():
