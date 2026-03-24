@@ -211,7 +211,7 @@ export default function Supplier() {
             <div style={{position: 'relative'}}>
               {i.image_url ? (
                         <img 
-                        src={`${BASE_URL}${i.image_url}`}
+                        src={i.image_url}
                         alt=""
                         className="resource-image"
                         />

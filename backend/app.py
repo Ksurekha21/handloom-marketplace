@@ -10,9 +10,16 @@ from buyer import buyer_bp
 from ai_logic import ai_logic_bp
 import models
 from flask_cors import CORS
+import cloudinary
+import cloudinary.uploader
 
 
 app = Flask(__name__)
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUD_NAME"),
+    api_key=os.environ.get("API_KEY"),
+    api_secret=os.environ.get("API_SECRET")
+)
 UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
