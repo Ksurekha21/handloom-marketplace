@@ -4,6 +4,14 @@ from flask import Blueprint, request, jsonify
 from db_config import db
 from models import RawMaterial, MaterialOrder
 from werkzeug.utils import secure_filename
+import cloudinary
+import cloudinary.uploader
+cloudinary.config(
+    cloud_name=os.getenv("CLOUD_NAME"),
+    api_key=os.getenv("API_KEY"),
+    api_secret=os.getenv("API_SECRET"),
+    secure=True
+)
 
 supplier_bp = Blueprint('supplier', __name__)
 
@@ -65,10 +73,9 @@ def add_material():
     file = request.files['image']
     if file.filename == '':
         return jsonify({"message": "No selected file"}), 400
+    result = cloudinary.uploader.upload(file)
 
-    filename = secure_filename(file.filename)
-    filepath = os.path.join(UPLOAD_FOLDER, filename)
-    file.save(filepath)
+    image_url = result["secure_url"]
 
     material = RawMaterial(
         supplier_id=request.form['supplier_id'],
@@ -76,7 +83,7 @@ def add_material():
         category=request.form['category'],
         quantity=request.form['quantity'],
         price=request.form['price'],
-        image_url=f"/uploads/{filename}"
+        image_url=image_url
     )
     db.session.add(material)
     db.session.commit()
