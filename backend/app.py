@@ -3,6 +3,8 @@ from flask_cors import CORS
 from db_config import db
 from flask_migrate import Migrate
 import os
+from dotenv import load_dotenv
+load_dotenv()  # Load .env file if present
 from auth import auth_bp
 from weaver import weaver_bp
 from supplier import supplier_bp
@@ -15,11 +17,13 @@ import cloudinary.uploader
 
 
 app = Flask(__name__)
-cloudinary.config(
-    cloud_name=os.environ.get("CLOUD_NAME"),
-    api_key=os.environ.get("API_KEY"),
-    api_secret=os.environ.get("API_SECRET")
-)
+# Configure Cloudinary only if credentials are available
+if os.environ.get("CLOUD_NAME") and os.environ.get("API_KEY") and os.environ.get("API_SECRET"):
+    cloudinary.config(
+        cloud_name=os.environ.get("CLOUD_NAME"),
+        api_key=os.environ.get("API_KEY"),
+        api_secret=os.environ.get("API_SECRET")
+    )
 UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -35,7 +39,14 @@ if database_url:
     if database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://","postgresql://",1)
 else:
-    database_url = "sqlite:///handloom.db"   # fallback for local testing
+    # Prefer the instance DB if present (keeps DB under backend/instance)
+    instance_db = os.path.join('backend', 'instance', 'handloom.db')
+    if os.path.exists(instance_db):
+        # SQLAlchemy sqlite URI: three slashes for relative path
+        instance_db_unix = instance_db.replace('\\', '/')
+        database_url = 'sqlite:///' + instance_db_unix
+    else:
+        database_url = "sqlite:///handloom.db"   # fallback for local testing
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

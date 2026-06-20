@@ -13,7 +13,7 @@ const base = {
   name: "Name",
   state: "State",
   role: "Role",
-  idProof: "Upload ID Proof",
+  idProof: "ID Number",
 
   // ✅ ADD THEM HERE (THIS IS THE PLACE)
   noAccount: "Don’t have an account? Register",

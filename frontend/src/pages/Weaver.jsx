@@ -200,10 +200,26 @@ export default function Weaver() {
     const sareeTitle = `${weaverSareeType} (${weaverMaterial})`;
     setLoading(true);
     try {
+      // normalize material to match buyer category labels (e.g., Pattu -> Silk)
+      const normalizeMaterial = (m) => {
+        if (!m) return m;
+        const mm = m.toString().toLowerCase();
+        if (mm.includes('pattu') || mm.includes('silk')) return 'Silk';
+        if (mm.includes('cotton')) return 'Cotton';
+        if (mm.includes('wool')) return 'Wool';
+        if (mm.includes('linen')) return 'Linen';
+        if (mm.includes('zari')) return 'Zari';
+        if (mm.includes('blend') || mm.includes('blended')) return 'Blended';
+        return m;
+      };
+
+      const materialLabel = normalizeMaterial(weaverMaterial);
+
       await api.post("/weaver/product", {
         weaver_id: userId,
         title: sareeTitle,
-        category: weaverSareeType,
+        // save normalized material into the category column so buyer filtering by material works
+        category: materialLabel,
         price: Number(price),
         color: color,
         days_to_weave: Number(daysTaken),
@@ -220,6 +236,9 @@ export default function Weaver() {
       setColor("");
       setImage("");
       setActiveTab("my-sarees");
+      // After upload navigate to buyer page filtered to this material + saree type
+      // reuse normalized materialLabel declared above
+      navigate(`/buyer?material=${encodeURIComponent(materialLabel)}&saree_type=${encodeURIComponent(weaverSareeType)}`);
     } catch (e) {
       console.error("Upload error:", e);
       alert("Error adding saree. Please try again.");

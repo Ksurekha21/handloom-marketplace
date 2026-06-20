@@ -8,6 +8,7 @@ import Weaver from "./pages/Weaver";
 import Supplier from "./pages/Supplier";
 import Buyer from "./pages/Buyer";
 import SupplierMarketplace from "./pages/SupplierMarketplace";
+import ProductDetail from "./pages/ProductDetail";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/weaver" element={<Weaver />} />
         <Route path="/supplier" element={<Supplier />} />
         <Route path="/buyer" element={<Buyer />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
          <Route
           path="/supplier-marketplace"
           element={<SupplierMarketplace />}

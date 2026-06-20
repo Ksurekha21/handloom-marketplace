@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy import func
 from db_config import db
 from models import User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,8 +29,8 @@ def register():
     if existing_user:
         return jsonify({"error": "Email already registered. Please login."}), 400
 
-    # 2. 📂 HANDLE FILE UPLOAD (ID Proof)
-    id_proof_path = None
+    # 2. 📂 HANDLE ID PROOF (Text or File)
+    id_proof_path = data.get('idProof')
     if 'idProof' in request.files:
         file = request.files['idProof']
         if file.filename != '':
@@ -70,11 +71,22 @@ def register():
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    # Accept JSON or form-encoded submissions from different clients
+    if request.is_json:
+        data = request.json
+    else:
+        data = request.form
 
-    user = User.query.filter_by(email=data['email']).first()
+    email = (data.get('email') or '').strip()
+    password = data.get('password') or ''
 
-    if not user or not check_password_hash(user.password, data['password']):
+    # case-insensitive lookup for email to reduce login friction
+    user = User.query.filter(func.lower(User.email) == email.lower()).first()
+
+    # Log minimal debug info in development to help diagnose client issues
+    print(f"[auth.login] attempt email='{email}' user_found={bool(user)}")
+
+    if not user or not check_password_hash(user.password or '', password):
         return jsonify({"error": "Invalid credentials"}), 401
 
     return jsonify({

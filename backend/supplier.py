@@ -4,14 +4,21 @@ from flask import Blueprint, request, jsonify
 from db_config import db
 from models import RawMaterial, MaterialOrder
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+load_dotenv()  # Load .env file if present
 import cloudinary
 import cloudinary.uploader
-cloudinary.config(
-    cloud_name=os.getenv("CLOUD_NAME"),
-    api_key=os.getenv("API_KEY"),
-    api_secret=os.getenv("API_SECRET"),
-    secure=True
+
+CLOUDINARY_ENABLED = bool(
+    os.getenv("CLOUD_NAME") and os.getenv("API_KEY") and os.getenv("API_SECRET")
 )
+if CLOUDINARY_ENABLED:
+    cloudinary.config(
+        cloud_name=os.getenv("CLOUD_NAME"),
+        api_key=os.getenv("API_KEY"),
+        api_secret=os.getenv("API_SECRET"),
+        secure=True
+    )
 
 supplier_bp = Blueprint('supplier', __name__)
 
@@ -67,39 +74,60 @@ UPLOAD_FOLDER = 'uploads'
 
 @supplier_bp.route('/material', methods=['POST'])
 def add_material():
-    if 'image' not in request.files:
-        return jsonify({"message": "No image part"}), 400
-    
-    file = request.files['image']
-    if file.filename == '':
-        return jsonify({"message": "No selected file"}), 400
-    result = cloudinary.uploader.upload(file)
+    try:
+        image_url = None
 
-    image_url = result["secure_url"]
+        # Handle image upload — Cloudinary if configured, else local storage
+        if 'image' in request.files:
+            file = request.files['image']
+            if file and file.filename != '':
+                if CLOUDINARY_ENABLED:
+                    result = cloudinary.uploader.upload(file)
+                    image_url = result["secure_url"]
+                else:
+                    # Fallback: save locally and return full URL
+                    filename = secure_filename(file.filename)
+                    upload_folder = os.path.join(os.path.dirname(__file__), 'uploads')
+                    os.makedirs(upload_folder, exist_ok=True)
+                    save_path = os.path.join(upload_folder, filename)
+                    file.save(save_path)
+                    # Build full URL so frontend can load it from the correct port
+                    host = request.host_url.rstrip('/')
+                    image_url = f"{host}/uploads/{filename}"
 
-    material = RawMaterial(
-        supplier_id=request.form['supplier_id'],
-        material_type=request.form['material_type'],
-        category=request.form['category'],
-        quantity=request.form['quantity'],
-        price=request.form['price'],
-        image_url=image_url
-    )
-    db.session.add(material)
-    db.session.commit()
+        material = RawMaterial(
+            supplier_id=request.form['supplier_id'],
+            material_type=request.form['material_type'],
+            category=request.form['category'],
+            quantity=request.form['quantity'],
+            price=request.form['price'],
+            image_url=image_url
+        )
+        db.session.add(material)
+        db.session.commit()
 
-    return jsonify({"message": "Material added successfully"}), 201
+        return jsonify({"message": "Material added successfully"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": str(e)}), 500
 
 @supplier_bp.route('/materials', methods=['GET'])
 def get_materials():
     materials = RawMaterial.query.all()
-    results = [{
-        "id": m.id,
-        "supplier_id": m.supplier_id,
-        "type": m.material_type,
-        "category": m.category,
-        "price": m.price,
-        "quantity": m.quantity,
-        "image_url": m.image_url
-    } for m in materials]
+    results = []
+    for m in materials:
+        # Fix legacy relative image paths stored before the full-URL fix
+        img = m.image_url
+        if img and img.startswith('/uploads/'):
+            img = f"http://localhost:5000{img}"
+        results.append({
+            "id": m.id,
+            "supplier_id": m.supplier_id,
+            "type": m.material_type,
+            "category": m.category,
+            "price": m.price,
+            "quantity": m.quantity,
+            "image_url": img,
+            "created_at": m.created_at.isoformat() if m.created_at else None
+        })
     return jsonify({"materials": results}), 200

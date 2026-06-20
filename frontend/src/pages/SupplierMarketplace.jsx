@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Dashboard.css";
 import api from "../api";
 
@@ -11,6 +12,8 @@ export default function SupplierMarketplace() {
       fetchMaterials();
     }
   }, [userRole]);
+
+  const navigate = useNavigate();
 
   const fetchMaterials = async () => {
     try {
@@ -38,7 +41,12 @@ export default function SupplierMarketplace() {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Supplier Marketplace 🏪</h1>
-        <button onClick={() => window.location.href = "/weaver"}>
+        <button onClick={() => {
+          try {
+            if (window.history && window.history.length > 1) { navigate(-1); return; }
+          } catch (e) { }
+          navigate('/weaver');
+        }}>
           Back to Weaver Dashboard
         </button>
       </div>

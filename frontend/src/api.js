@@ -1,6 +1,9 @@
 import axios from "axios";
 
-export const BASE_URL="https://handloom-marketplace.onrender.com";
+export const BASE_URL =
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:5000"
+    : "https://handloom-marketplace.onrender.com";
 
 
 

@@ -14,7 +14,7 @@ export default function Register() {
   const [state, setState] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [idProof, setIdProof] = useState(null);
+  const [idProof, setIdProof] = useState("");
   const [error, setError] = useState("");
 
   const [weaverMaterial, setWeaverMaterial] = useState("");
@@ -41,6 +41,11 @@ export default function Register() {
       return;
     }
 
+    if ((role === "weaver" || role === "supplier") && !idProof) {
+      setError("Please fill all fields, including ID Number");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -50,7 +55,7 @@ export default function Register() {
       formData.append("password", password);
       
       if (idProof) {
-        console.log("Appending ID Proof:", idProof.name);
+        console.log("Appending ID Proof Number:", idProof);
         formData.append("idProof", idProof);
       }
       
@@ -147,13 +152,11 @@ export default function Register() {
 
         {/* 🔥 ID PROOF FIELD (CONDITIONAL) */}
         {(role === "weaver" || role === "supplier") && (
-          <div className="file-box">
-            <label>{t("idProof")} *</label>
-            <input
-              type="file"
-              onChange={(e) => setIdProof(e.target.files[0])}
-            />
-          </div>
+          <input
+            placeholder={`${t("idProof")} *`}
+            value={idProof}
+            onChange={(e) => setIdProof(e.target.value)}
+          />
         )}
 
         <input
